@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35208.52
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestAtlasInsights", "InvestAtlasInsights\InvestAtlasInsights.csproj", "{C9D7167B-F6E5-4022-A89B-98936EC5997E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{971667AC-DCCE-413B-9D4E-2267A7FBA80A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C9D7167B-F6E5-4022-A89B-98936EC5997E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9D7167B-F6E5-4022-A89B-98936EC5997E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9D7167B-F6E5-4022-A89B-98936EC5997E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9D7167B-F6E5-4022-A89B-98936EC5997E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{971667AC-DCCE-413B-9D4E-2267A7FBA80A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{971667AC-DCCE-413B-9D4E-2267A7FBA80A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{971667AC-DCCE-413B-9D4E-2267A7FBA80A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{971667AC-DCCE-413B-9D4E-2267A7FBA80A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0DE942F3-0AF3-4376-80E6-08BE27FA6EDA}
+	EndGlobalSection
+EndGlobal

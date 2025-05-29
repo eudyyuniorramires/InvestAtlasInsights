@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Application.ViewModels.Pais
 {
-    public class PaisViewModels
+    public class DeletePaisViewModels
     {
-        public required int Id { get; set; }
+        public int Id { get; set; }
 
         public required string Nombre { get; set; }
 
-        public required string CodigoISO { get; set; }
 
-        public ICollection<IndicadorPais>? IndicadoresPaises { get; set; }
+
+
     }
 }

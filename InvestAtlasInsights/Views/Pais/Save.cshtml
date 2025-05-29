@@ -13,12 +13,13 @@
 
 <div class="col-12  col-md-6 offset-md-3">
     <div class="card">
-        <div class="card-hearder bg-success  text-light">
+        <div class="card-hearder bg-success  text-ligh ">
+           <h5 class="text-center">@(editmode ? "Editando el pais - " + Model.Nombre : "Agregando Pais") </h5>
            <h5 class="text-center"> Pais</h5>
-        </div>
-
+       
+      </div>
         <div class="card-body">
-            <form asp-controller="Pais" asp-action="Create" method="POST">
+            <form asp-controller="Pais" asp-action="@(editmode ? "Edit" : "Create")" method="POST">
                 <input  type="hidden" asp-for="Id"/>
                 <div class="mb-3">
                     <label asp-for="Nombre" class="form-label">Nombre:</label>

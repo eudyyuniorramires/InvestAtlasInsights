@@ -1,7 +1,31 @@
-﻿
+﻿@using Application.ViewModels.Pais
+
+@model DeletePaisViewModels
+
 @{
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
 
+<div class="col-12  col-md-6 offset-md-3">
+    <div class="card">
+        <div class="card-hearder bg-success  text-ligh ">
+            <h4 class="text-center"> </h4>
+           <h5 class="text-center">Estas seguro que deseas eliminar el pais - @Model.Nombre  de la lista?</h5>
+           <h5 class="text-center"> Pais</h5>
+       
+      </div>
+        <div class="card-body">
+            <form asp-controller="Pais" asp-action="Delete" method="POST">
+                <input  type="hidden" asp-for="Id"/>
+                <input type="hidden" asp-for="Nombre"/>
+            
+
+                <div>
+                    <button type="submit" class="btn btn-outline-danger float-end">Eliminar</button>
+                    <a asp-controller="Pais" asp-action ="Index"  class="btn btn-outline-warning me-2">Regresar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

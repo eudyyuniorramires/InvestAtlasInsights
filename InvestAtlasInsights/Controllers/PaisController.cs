@@ -1,6 +1,7 @@
 ﻿using Application.Dtos.Pais;
 using Application.Services;
 using Application.ViewModels.Pais;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Persistence.Context;
 
@@ -84,20 +85,49 @@ namespace InvestAtlasInsights.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int Id,string Nombre)
+        public async Task<IActionResult> Edit(SavePaisViewModels vm)
         {
-            return View();
+            PaisDto dto = new()
+            {
+                Id = vm.Id,
+                Nombre = vm.Nombre,
+                CodigoISO = vm.CodigoISO,
+                IndicadoresPaises = vm.IndicadoresPaises
+            };
+
+            await _paisService.UpdateAsync(dto);
+            return RedirectToRoute(new { Controller = "Pais", Action = "Index" });
+
         }
 
         public async Task<IActionResult> Delete(int Id)
         {
-            return View();
+            var dto = await _paisService.GetById(Id);
+
+            if (dto == null)
+            {
+                return RedirectToRoute(new { Controller = "Pais", Action = "Index" });
+            }
+
+            DeletePaisViewModels vm = new() { Id = dto.Id, Nombre = dto.Nombre };
+
+            return View(vm);
+          
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeletePost(int Id)
+        public async Task<IActionResult> Delete(DeletePaisViewModels vm)
         {
-            return View();
+
+            if (!ModelState.IsValid) 
+            {
+
+                return View(vm);
+            
+            }
+            await _paisService.DeleteAsync(vm.Id);
+            return RedirectToRoute(new { Controller = "Pais", Action = "Index" });
+
         }
     }
 }

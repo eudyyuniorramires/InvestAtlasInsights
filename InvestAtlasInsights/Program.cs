@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
+using Persistence.Repositories;
 
 namespace InvestAtlasInsights
 
@@ -20,6 +21,9 @@ namespace InvestAtlasInsights
                 options.UseSqlServer(connectionString));
 
 
+           builder.Services.AddScoped<MacroIndicadorRepository>();
+
+
 
             var app = builder.Build();
 
@@ -37,7 +41,7 @@ namespace InvestAtlasInsights
             app.UseRouting();
 
             app.UseAuthorization();
-
+          
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

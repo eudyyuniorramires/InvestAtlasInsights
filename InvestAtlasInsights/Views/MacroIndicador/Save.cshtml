@@ -1,0 +1,59 @@
+﻿@using Application.ViewModels.MacroIndicador;
+@model SaveMacroIndicadorViewModels;
+
+@{
+
+    bool editmode = ViewBag.EditMode != null ? ViewBag.EditMode : false;
+}
+
+
+@{
+
+    ViewBag.Title = "Guardar MacroIndicador";
+}
+
+<div class="col-12  col-md-6 offset-md-3">
+    <div class="card">
+        <div class="card-hearder bg-success  text-ligh ">
+            <h5 class="text-center">@(editmode ? "Editando el MacroIndicador - " + Model.Nombre : "Agregando MacroIndicador") </h5>
+
+        </div>
+        <div class="card-body">
+            <form asp-controller="MacroIndicador" asp-action="@(editmode ? "Edit" : "Create")" method="POST">
+                <input type="hidden" asp-for="Id" />
+                <div class="mb-3">
+                    <label asp-for="Nombre" class="form-label">Nombre:</label>
+                    <input class="form-control" asp-for="Nombre" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Peso" class="form-label">Peso:</label>
+                    <input class="form-control" asp-for="Peso" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">¿Más alto es?</label>
+                    <div>
+                        <input type="radio"
+                               name="MasAltoEsMejor_@Model.Id"
+                               value="true"
+                        @(Model.MasAltoEsMejor == true ? "checked" : "") />
+                        <label>Mejor</label>
+
+                        <input type="radio"
+                               name="MasAltoEsMejor_@Model.Id"
+                               value="false"
+                        @(Model.MasAltoEsMejor == false ? "checked" : "") />
+                        <label>Peor</label>
+                    </div>
+                </div>
+
+
+                <div>
+                    <button type="submit" class="btn btn-outline-primary float-end">Guardar</button>
+                    <a asp-controller="Pais" asp-action="Index" class="btn btn-outline-warning me-2">Regresar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

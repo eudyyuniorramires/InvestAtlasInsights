@@ -58,7 +58,6 @@ namespace InvestAtlasInsights.Controllers
                 Id = 0,
                 Nombre = vm.Nombre,
                 CodigoISO = vm.CodigoISO,
-                IndicadoresPaises = vm.IndicadoresPaises
               };
 
             await _paisService.AddAsync(dto);
@@ -92,7 +91,6 @@ namespace InvestAtlasInsights.Controllers
                 Id = vm.Id,
                 Nombre = vm.Nombre,
                 CodigoISO = vm.CodigoISO,
-                IndicadoresPaises = vm.IndicadoresPaises
             };
 
             await _paisService.UpdateAsync(dto);

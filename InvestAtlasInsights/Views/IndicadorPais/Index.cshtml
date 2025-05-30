@@ -1,0 +1,101 @@
+﻿@using Application.Dtos.IndicadorPais
+
+@model List<IndicadorPaisDto>
+@{
+    ViewData["Title"] = "Indicadores por País";
+}
+
+<div class="row">
+    <div class="text-center">
+        <h1 class="display-4">Mantenimiento de Indicadores</h1>
+    </div>
+</div>
+
+<form method="get" class="form-inline mb-3">
+    <div class="form-group mr-2">
+        <label for="pais" class="mr-2">País:</label> 
+        <select id="pais" name="PaisId" class="form-control">
+            <option value="">Todos</option>
+            @if (ViewBag.Paises != null && ViewBag.Paises is IEnumerable<SelectListItem>)
+            {
+                @foreach (var pais in (IEnumerable<SelectListItem>)ViewBag.Paises)
+
+                {
+                    <option value="@pais.Value" selected="@(Context.Request.Query["PaisId"] == pais.Value)">
+                        @pais.Text
+                    </option>
+                }
+            }
+            else
+            {
+                <option disabled>No hay países disponibles</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group mr-2">
+        <label for="anio" class="mr-2">Año:</label>
+        <input type="number" id="anio" name="anio" class="form-control"
+               value="@Context.Request.Query["anio"]" />
+    </div>
+
+ 
+
+    <div class="mt-2">
+        <button type="submit" class="btn btn-outline-success">Filtrar</button>
+        <a asp-action="Index" class="btn btn-outline-primary me-2">Limpiar</a>
+    </div>
+
+    
+</form>
+
+
+<div class="row mt-2">
+    <a class="btn btn-outline-success float-end" asp-action="Create" asp-controller="IndicadorPais" asp-action="Create">Agregar Indicador +</a>
+</div>
+
+@if (Model.Count == 0)
+
+{
+    <div class="alert alert-info">No hay indicadores registrados.</div>
+}
+
+else
+
+{
+   <div class="row mt-2 d-flex flex-wrap justify-content-start">
+    @if (Model.Count == 0)
+    {
+        <div class="text-center">
+            <h5 class="display-4">No hay Macro Indicadores</h5>
+        </div>
+    }
+    else
+    {
+        @foreach (var item in Model)
+        {
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Pais: @item.PaisNombre</h5>
+                        <h5 class="card-title">Macro Indicador: @item.MacroIndicadorNombre</h5>
+                        <h5 class="card-title">Año: @item.Anio</h5>
+                        <h5 class="card-title">Valor: @item.Valor</h5>
+
+
+                        
+
+                        <div class="mt-2">
+                            <a class="btn btn-outline-warning" asp-controller="IndicadorPais" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                                <a class="btn btn-outline-danger me-2" asp-controller="IndicadorPais" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+    
+}
+</div>
+}

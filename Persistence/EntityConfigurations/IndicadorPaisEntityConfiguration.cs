@@ -25,7 +25,7 @@ namespace Persistence.EntityConfigurations
                 .HasColumnType("decimal(18,2)");
 
 
-            builder.Property(ip => ip.Año)
+            builder.Property(ip => ip.Anio)
                 .IsRequired();
 
             #endregion

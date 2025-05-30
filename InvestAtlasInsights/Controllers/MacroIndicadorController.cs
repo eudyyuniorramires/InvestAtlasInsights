@@ -27,7 +27,6 @@ namespace InvestAtlasInsights.Controllers
                 Nombre = entity.Nombre,
                 Peso = entity.Peso,
                 MasAltoEsMejor = entity.MasAltoEsMejor,
-                IndicadoresPaises = entity.IndicadoresPaises
             }).ToList();
 
             return View (listEntityVms);
@@ -57,7 +56,6 @@ namespace InvestAtlasInsights.Controllers
                 Nombre = vm.Nombre,
                 Peso = vm.Peso,
                 MasAltoEsMejor = vm.MasAltoEsMejor,
-                IndicadoresPaises = vm.IndicadoresPaises
             };
 
             await _macroIndicadorService.AddAsync(dto);

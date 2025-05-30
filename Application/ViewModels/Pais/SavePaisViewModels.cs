@@ -18,7 +18,6 @@ namespace Application.ViewModels.Pais
 
         public required string CodigoISO { get; set; }
 
-        public ICollection<IndicadorPais>? IndicadoresPaises { get; set; }
     }
 }
 

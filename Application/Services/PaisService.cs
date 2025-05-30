@@ -1,4 +1,5 @@
-﻿using Application.Dtos.Pais;
+﻿using Application.Dtos.IndicadorPais;
+using Application.Dtos.Pais;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
 using Persistence.Entities;
@@ -21,29 +22,39 @@ namespace Application.Services
             _paisRepository = new PaisRepository(applicationDbContext);
         }
 
-        public async Task<bool> AddAsync(PaisDto dto) 
+        public async Task<bool> AddAsync(PaisDto dto)
         {
-
-
             try
             {
-              Pais entity = new() { Id = 0, Nombre = dto.Nombre, CodigoISO = dto.CodigoISO , IndicadoresPaises = dto.IndicadoresPaises };
-              entity = await _paisRepository.AddAsync(entity);
+                var indicadores = dto.IndicadoresPaises?
+                    .Select(dtoInd => new IndicadorPais
+                    {
+                        Id = dtoInd.Id,
+                        PaisId = dtoInd.PaisId,
+                        MacroIndicadorId = dtoInd.MacroIndicadorId,
+                        Anio = dtoInd.Anio,
+                        Valor = dtoInd.Valor
+                    })
+                    .ToList();
 
-               if (entity == null)
-               {
-                return false;
-               }
+                Pais entity = new()
+                {
+                    Id = 0,
+                    Nombre = dto.Nombre,
+                    CodigoISO = dto.CodigoISO,
+                    IndicadoresPaises = indicadores ?? new List<IndicadorPais>()
+                };
 
-                return true;
+                entity = await _paisRepository.AddAsync(entity);
 
+                return entity != null;
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return false;
             }
-           
         }
+
 
 
 
@@ -53,8 +64,21 @@ namespace Application.Services
 
             try
             {
-                Pais? entity = new() { Id = dto.Id, Nombre = dto.Nombre, CodigoISO = dto.CodigoISO, IndicadoresPaises = dto.IndicadoresPaises };
-                entity = await _paisRepository.UpdateAsync(entity.Id,entity);
+                var entity = new Pais
+                {
+                    Id = dto.Id,
+                    Nombre = dto.Nombre,
+                    CodigoISO = dto.CodigoISO,
+                    IndicadoresPaises = dto.IndicadoresPaises?
+                 .Select(ind => new IndicadorPais
+                  {
+                   Id = ind.Id,
+                   PaisId = ind.PaisId,
+                   MacroIndicadorId = ind.MacroIndicadorId,
+                   Valor = ind.Valor,
+                   Anio = ind.Anio
+                    }).ToList()
+                };
 
                 if (entity == null)
                 {
@@ -102,7 +126,22 @@ namespace Application.Services
                     return null;
                 }
 
-                PaisDto dto = new () {   Id = entity.Id, Nombre = entity.Nombre,  CodigoISO = entity.CodigoISO, IndicadoresPaises = entity.IndicadoresPaises };
+                var dto = new PaisDto
+                {
+                    Id = entity.Id,
+                    Nombre = entity.Nombre,
+                    CodigoISO = entity.CodigoISO,
+                    IndicadoresPaises = entity.IndicadoresPaises?
+                      .Select(ind => new IndicadorPaisDto
+                    {
+                     Id = ind.Id,
+                     PaisId = ind.PaisId,
+                     MacroIndicadorId = ind.MacroIndicadorId,
+                     Valor = ind.Valor,
+                     Anio = ind.Anio
+                     }).ToList() ?? new List<IndicadorPaisDto>()
+                   };
+
 
                 return dto;
 
@@ -117,10 +156,8 @@ namespace Application.Services
 
         public async Task<List<PaisDto>> GetAll()
         {
-
             try
             {
-
                 var listEntities = await _paisRepository.GetAllList();
 
                 var listEntitiesDto = listEntities.Select(entity => new PaisDto
@@ -128,50 +165,61 @@ namespace Application.Services
                     Id = entity.Id,
                     Nombre = entity.Nombre,
                     CodigoISO = entity.CodigoISO,
-                    IndicadoresPaises = entity.IndicadoresPaises
+                    IndicadoresPaises = entity.IndicadoresPaises?
+                        .Select(ind => new IndicadorPaisDto
+                        {
+                            Id = ind.Id,
+                            PaisId = ind.PaisId,
+                            MacroIndicadorId = ind.MacroIndicadorId,
+                            Anio = ind.Anio,
+                            Valor = ind.Valor
+                        }).ToList() ?? new List<IndicadorPaisDto>()
                 }).ToList();
 
                 return listEntitiesDto;
-
-
             }
             catch (Exception)
             {
                 return [];
             }
-
         }
 
 
 
         public async Task<List<PaisDto>> GetAllWithInclude()
         {
-
             try
             {
+                var listEntitiesQuery = _paisRepository.GetAllQuery();
 
-                var listEntitiesQuery =  _paisRepository.GetAllQuery();
-
-                var listEntity =  await listEntitiesQuery.Include(at => at.IndicadoresPaises).ToListAsync();
+                var listEntity = await listEntitiesQuery
+                    .Include(at => at.IndicadoresPaises)
+                    .ToListAsync();
 
                 var listEntitiesDto = listEntity.Select(entity => new PaisDto
                 {
                     Id = entity.Id,
                     Nombre = entity.Nombre,
                     CodigoISO = entity.CodigoISO,
-                    IndicadoresPaises = entity.IndicadoresPaises
+                    IndicadoresPaises = entity.IndicadoresPaises?
+                        .Select(ind => new IndicadorPaisDto
+                        {
+                            Id = ind.Id,
+                            PaisId = ind.PaisId,
+                            MacroIndicadorId = ind.MacroIndicadorId,
+                            Anio = ind.Anio,
+                            Valor = ind.Valor
+                        }).ToList() ?? new List<IndicadorPaisDto>()
                 }).ToList();
 
                 return listEntitiesDto;
-
-
             }
             catch (Exception)
             {
                 return [];
             }
-
         }
+
 
 
     }

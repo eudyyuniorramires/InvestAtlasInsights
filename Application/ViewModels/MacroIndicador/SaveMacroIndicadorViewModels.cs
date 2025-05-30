@@ -25,6 +25,5 @@ namespace Application.ViewModels.MacroIndicador
 
         public required bool MasAltoEsMejor { get; set; }
 
-        public ICollection<IndicadorPais>? IndicadoresPaises { get; set; }
     }
 }

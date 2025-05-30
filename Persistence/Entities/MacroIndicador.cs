@@ -16,6 +16,6 @@ namespace Persistence.Entities
 
         public bool MasAltoEsMejor { get; set; }
 
-        public ICollection<IndicadorPais>? IndicadoresPaises { get; set; }
+        public virtual ICollection<IndicadorPais> ?IndicadoresPaises { get; set; } 
     }
 }

@@ -1,4 +1,5 @@
-﻿using Persistence.Entities;
+﻿using Application.Dtos.IndicadorPais;
+using Persistence.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace Application.ViewModels.MacroIndicador
 
         public bool MasAltoEsMejor { get; set; }
 
-        public ICollection<IndicadorPais>? IndicadoresPaises { get; set; }
+        public ICollection<IndicadorPaisDto>? IndicadoresPaises { get; set; }
+
+
     }
 }

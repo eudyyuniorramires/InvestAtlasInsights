@@ -44,7 +44,6 @@ namespace Application.Services
                     Nombre = dto.Nombre,
                     Peso = dto.Peso,
                     MasAltoEsMejor = dto.MasAltoEsMejor,
-                    IndicadoresPaises = dto.IndicadoresPaises
                 };
                 entity = await _macroIndicadorRepository.AddAsync(entity);
 
@@ -100,7 +99,6 @@ namespace Application.Services
                     Nombre = entity.Nombre,
                     Peso = entity.Peso,
                     MasAltoEsMejor = entity.MasAltoEsMejor,
-                    IndicadoresPaises = entity.IndicadoresPaises
                 };
 
                 return dto;
@@ -129,7 +127,6 @@ namespace Application.Services
                     Nombre = entity.Nombre,
                     Peso = entity.Peso,
                     MasAltoEsMejor = entity.MasAltoEsMejor,
-                    IndicadoresPaises = entity.IndicadoresPaises
                 }).ToList();
 
 

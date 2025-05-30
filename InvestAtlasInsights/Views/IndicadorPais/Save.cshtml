@@ -1,5 +1,4 @@
 ﻿@using Application.ViewModels.IndicadorPais;
-
 @model SaveIndicadorPaisViewModel
 
 <form asp-action="@(Model.IsEdit ? "Edit" : "Create")" method="post">
@@ -10,17 +9,17 @@
 
     <div class="form-group">
         <label asp-for="PaisId"></label>
-        <select asp-for="PaisId" asp-items="Model.Paises" class="form-control")></select>
+        <select asp-for="PaisId" asp-items="Model.Paises" class="form-control"></select>
     </div>
 
     <div class="form-group">
         <label asp-for="MacroindicadorId"></label>
-        <select asp-for="MacroindicadorId" asp-items="Model.Macroindicadores" class="form-control")></select>
+        <select asp-for="MacroindicadorId" asp-items="Model.Macroindicadores" class="form-control"></select>
     </div>
 
     <div class="form-group">
         <label asp-for="Anio"></label>
-        <input asp-for="Anio" class="form-control") />
+        <input asp-for="Anio" class="form-control" />
     </div>
 
     <div class="form-group">

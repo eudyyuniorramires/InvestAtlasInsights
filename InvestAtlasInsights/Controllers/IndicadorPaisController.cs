@@ -1,7 +1,9 @@
 ﻿using Application.Dtos.IndicadorPais;
 using Application.Services;
 using Application.ViewModels.IndicadorPais;
+using Application.ViewModels.Pais;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Persistence.Context;
 
@@ -64,7 +66,7 @@ namespace InvestAtlasInsights.Controllers
                 MacroIndicadorId = vm.MacroindicadorId,
                 Anio = vm.Anio,
                 Valor = vm.Valor
-                
+
 
             };
 
@@ -98,11 +100,61 @@ namespace InvestAtlasInsights.Controllers
             var dto = new IndicadorPaisDto
             {
                 Id = vm.Id,
+                PaisId = vm.PaisId,
+                MacroIndicadorId = vm.MacroindicadorId,
+                Anio = vm.Anio,
                 Valor = vm.Valor
             };
 
             await _indicadorService.UpdateValorAsync(dto);
             return RedirectToAction("Index");
         }
+
+
+
+        public async Task<IActionResult> Delete(int Id)
+        {
+
+            var dto = await _indicadorService.GetByIdAsync(Id);
+
+            if (dto == null)
+            {
+                return RedirectToRoute(new { Controller = "IndicadorPais", Action = "Index" });
+
+            }
+
+            DeleteIndicadorPaisViewModels vm = new()
+            {
+                Id = dto.Id,
+
+            };
+
+            return View(vm);
+
+
+
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(DeleteIndicadorPaisViewModels vm)
+        {
+
+            if (!ModelState.IsValid)
+            {
+
+                return View(vm);
+
+            }
+            await _indicadorService.DeleteAsync(vm.Id);
+            return RedirectToRoute(new { Controller = "IndicadorPais", Action = "Index" });
+
+        }
+
+
+
     }
+
+
+
 }

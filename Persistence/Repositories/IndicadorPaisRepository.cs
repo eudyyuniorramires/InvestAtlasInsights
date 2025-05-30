@@ -47,17 +47,21 @@ namespace Persistence.Repositories
 
         }
 
-        public async Task<IndicadorPais?> UpdateValorAsync(int id, decimal nuevoValor)
+        public async Task<IndicadorPais?> UpdateValorAsync(int id, decimal nuevoValor, int anio, int macroIndicadorId)
         {
             var indicador = await _context.IndicadoresPaises.FindAsync(id);
             if (indicador != null)
             {
                 indicador.Valor = nuevoValor;
+                indicador.Anio = anio;
+                indicador.MacroIndicadorId = macroIndicadorId;
+
                 await _context.SaveChangesAsync();
                 return indicador;
             }
             return null;
         }
+
 
         public async Task DeleteAsync(int id)
         {

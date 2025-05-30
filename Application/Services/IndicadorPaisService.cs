@@ -1,4 +1,6 @@
 ﻿using Application.Dtos.IndicadorPais;
+using Application.ViewModels.IndicadorPais;
+using Application.ViewModels.Pais;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
 using Persistence.Entities;
@@ -71,12 +73,15 @@ namespace Application.Services
 
         public async Task UpdateValorAsync(IndicadorPaisDto dto)
         {
-            await _repo.UpdateValorAsync(dto.Id, dto.Valor);
+            await _repo.UpdateValorAsync(dto.Id, dto.Valor, dto.Anio, dto.MacroIndicadorId);
         }
 
         public async Task DeleteAsync(int id)
         {
             await _repo.DeleteAsync(id);
         }
+
+
+
     }
 }

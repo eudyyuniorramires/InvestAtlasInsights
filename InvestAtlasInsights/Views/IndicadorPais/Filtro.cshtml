@@ -1,0 +1,41 @@
+﻿<form asp-controller="Indf" asp-action="Filter" method="post" class="filter-form">
+    <div class="row mb-3">
+        <!-- Country Selector -->
+        <div class="col-md-6">
+            <label for="CountryId" class="form-label">Country:</label>
+            <select id="CountryId" name="CountryId" class="form-select">
+                <option value="0">All countries</option>
+                @if (ViewBag.Countries != null)
+                {
+                    foreach (var country in ViewBag.Countries)
+                    {
+                        <option value="@country.Id">@country.Name</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <!-- Year Selector -->
+        <div class="col-md-6">
+            <label for="Year" class="form-label">Year:</label>
+            <select id="Year" name="Year" class="form-select">
+                <option value="0">All years</option>
+                @if (ViewBag.Years != null)
+                {
+                    foreach (var yearItem in ViewBag.Years)
+                    {
+                        <option value="@yearItem">@yearItem</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <!-- Submit Button (recommended addition) -->
+    <div class="row">
+        <div class="col-md-12 text-end">
+            <button type="submit" class="btn btn-primary">Apply Filters</button>
+            <button type="reset" class="btn btn-secondary ms-2">Reset</button>
+        </div>
+    </div>
+</form>

@@ -16,15 +16,15 @@ namespace Application.Services
 
         private readonly MacroIndicadorRepository _macroIndicadorRepository;
 
-        public MacroIndicadorService(ApplicationDbContext applicationDbContext) 
+        public MacroIndicadorService(ApplicationDbContext applicationDbContext)
         {
-        
+
             _macroIndicadorRepository = new MacroIndicadorRepository(applicationDbContext);
 
         }
 
 
-        public async Task<bool> AddAsync(MacroIndicadorDto dto) 
+        public async Task<bool> AddAsync(MacroIndicadorDto dto)
         {
             try
             {
@@ -61,31 +61,25 @@ namespace Application.Services
             }
         }
 
-        public async Task<bool> Delete(int Id) 
+        public async Task<bool> Delete(int Id)
         {
-
-            try 
+            try
             {
-              await _macroIndicadorRepository.DeleteAsync(Id);
-              return true;
+                return await _macroIndicadorRepository.DeleteAsync(Id);
             }
-            catch(Exception)
+            catch (Exception)
             {
-                return false;
+                return false; // Manejo de excepciones
             }
-
-           
-
-
         }
-        
 
 
-        public async Task<MacroIndicadorDto> GetById(int id) 
+
+        public async Task<MacroIndicadorDto> GetById(int id)
         {
-            try 
+            try
             {
-            
+
                 var entity = await _macroIndicadorRepository.GetByIdAsync(id);
 
                 if (entity == null)
@@ -93,7 +87,7 @@ namespace Application.Services
                     return null;
                 }
 
-                MacroIndicadorDto dto = new ()
+                return new MacroIndicadorDto
                 {
                     Id = entity.Id,
                     Nombre = entity.Nombre,
@@ -101,19 +95,17 @@ namespace Application.Services
                     MasAltoEsMejor = entity.MasAltoEsMejor,
                 };
 
-                return dto;
-
             }
             catch (Exception)
             {
                 return null;
 
             }
-        
-        
+
+
         }
 
-        public async Task<List<MacroIndicadorDto>> GetAll() 
+        public async Task<List<MacroIndicadorDto>> GetAll()
         {
 
             try
@@ -134,20 +126,20 @@ namespace Application.Services
 
             }
 
-            catch (Exception) 
+            catch (Exception)
             {
 
                 return [];
             }
-        
+
         }
 
 
-        public async Task<List<MacroIndicador>> GetAllWithInclude() 
+        public async Task<List<MacroIndicador>> GetAllWithInclude()
         {
-            try 
+            try
             {
-                var listsEntitiesQuery =  _macroIndicadorRepository.GetAllQuery();
+                var listsEntitiesQuery = _macroIndicadorRepository.GetAllQuery();
 
                 var listaEntities = await listsEntitiesQuery.Include(m => m.IndicadoresPaises).ToListAsync();
 
@@ -169,6 +161,39 @@ namespace Application.Services
             {
                 return [];
             }
+
+        }
+
+
+  
+
+        public async Task<bool> UpdateAsyncEntie(MacroIndicadorDto dto, int Id)
+        {
+            try
+            {
+
+                var entity = await _macroIndicadorRepository.GetByIdAsync(Id);
+
+                if (entity == null)
+                {
+                    return false;
+                }
+
+                entity.Id = dto.Id;
+                entity.Nombre = dto.Nombre;
+                entity.Peso = dto.Peso;
+                entity.MasAltoEsMejor = dto.MasAltoEsMejor;
+
+                var updatedEntity = await _macroIndicadorRepository.UpdateAsync(Id, entity);
+
+                return updatedEntity != null;
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
 
         }
     }

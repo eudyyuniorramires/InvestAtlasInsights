@@ -15,7 +15,7 @@
 <div class="col-12  col-md-6 offset-md-3">
     <div class="card">
         <div class="card-hearder bg-success  text-ligh ">
-            <h5 class="text-center">@(editmode ? "Editando el MacroIndicador - " + Model.Nombre : "Agregando MacroIndicador") </h5>
+            <h5 class="text-center">@(editmode ? "Editando el MacroIndicador  " + Model.Nombre : "Agregando MacroIndicador") </h5>
 
         </div>
         <div class="card-body">
@@ -51,7 +51,7 @@
 
                 <div>
                     <button type="submit" class="btn btn-outline-primary float-end">Guardar</button>
-                    <a asp-controller="Pais" asp-action="Index" class="btn btn-outline-warning me-2">Regresar</a>
+                    <a asp-controller="MacroIndicador" asp-action="Index" class="btn btn-outline-warning me-2">Regresar</a>
                 </div>
             </form>
         </div>

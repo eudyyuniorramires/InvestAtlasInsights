@@ -21,6 +21,7 @@ namespace Persistence.Context
 
         public DbSet<Entities.ConfiguracionRetorno> ConfiguracionesRetorno { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -31,6 +32,7 @@ namespace Persistence.Context
             modelBuilder.ApplyConfiguration(new IndicadorPaisEntityConfiguration());
             modelBuilder.ApplyConfiguration(new MacroIndicadorEntityConfiguration());
             modelBuilder.ApplyConfiguration(new PaisEntityConfiguration());
+
 
 
         }

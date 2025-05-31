@@ -33,15 +33,32 @@ namespace InvestAtlasInsights.Controllers
             return vm;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? PaisId, int? anio)
         {
+            // Cargar la lista de países para el dropdown
             var paises = await _paisService.GetAll();
             ViewBag.Paises = paises.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.Nombre }).ToList();
 
+            // Obtener todos los indicadores
             var dtos = await _indicadorService.GetAllWithInclude();
+
+            // Aplicar filtro si hay PaisId
+            if (PaisId.HasValue)
+            {
+                dtos = dtos.Where(i => i.PaisId == PaisId.Value).ToList();
+            }
+
+            // Aplicar filtro si hay año
+            if (anio.HasValue)
+            {
+                dtos = dtos.Where(i => i.Anio == anio.Value).ToList();
+            }
 
             return View(dtos);
         }
+
+
+
 
         public async Task<IActionResult> Create()
         {
@@ -109,6 +126,8 @@ namespace InvestAtlasInsights.Controllers
             await _indicadorService.UpdateValorAsync(dto);
             return RedirectToAction("Index");
         }
+
+
 
 
 

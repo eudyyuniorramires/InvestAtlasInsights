@@ -52,20 +52,22 @@ namespace Persistence.Repositories
 
 
 
-        public async Task DeleteAsync(int Id)
+        public async Task<bool> DeleteAsync(int Id)
         {
-
             var entity = await _context.Set<MacroIndicador>().FindAsync(Id);
 
             if (entity != null)
             {
-
                 _context.Set<MacroIndicador>().Remove(entity);
                 await _context.SaveChangesAsync();
-
+                return true; 
             }
 
+            return false; 
         }
+
+
+
 
 
         public async Task<List<MacroIndicador>> GetAllList()

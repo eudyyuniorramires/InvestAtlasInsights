@@ -10,15 +10,15 @@ namespace InvestAtlasInsights.Controllers
     {
         private readonly MacroIndicadorService _macroIndicadorService;
 
-        public MacroIndicadorController(ApplicationDbContext context) 
+        public MacroIndicadorController(ApplicationDbContext context)
         {
 
             _macroIndicadorService = new MacroIndicadorService(context);
 
         }
-        public async Task<IActionResult> Index() 
+        public async Task<IActionResult> Index()
         {
-        
+
             var dtos = await _macroIndicadorService.GetAllWithInclude();
 
             var listEntityVms = dtos.Select(entity => new MacroIndicadorViewModels
@@ -29,7 +29,7 @@ namespace InvestAtlasInsights.Controllers
                 MasAltoEsMejor = entity.MasAltoEsMejor,
             }).ToList();
 
-            return View (listEntityVms);
+            return View(listEntityVms);
 
         }
 
@@ -42,10 +42,10 @@ namespace InvestAtlasInsights.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> Create(SaveMacroIndicadorViewModels vm) 
+        public async Task<IActionResult> Create(SaveMacroIndicadorViewModels vm)
         {
 
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
                 return View("Save", vm);
             }
@@ -60,6 +60,90 @@ namespace InvestAtlasInsights.Controllers
 
             await _macroIndicadorService.AddAsync(dto);
             return RedirectToRoute(new { Controller = "MacroIndicador", Action = "Index" });
+        }
+
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            ViewBag.EditMode = true;
+
+            var dto = await _macroIndicadorService.GetById(id);
+
+            if (dto == null) return NotFound();
+
+            var vm = new SaveMacroIndicadorViewModels
+            {
+                Id = dto.Id,
+                Nombre = dto.Nombre,
+                Peso = dto.Peso,
+                MasAltoEsMejor = dto.MasAltoEsMejor
+            };
+
+
+            return View("Save", vm);
+
+        }
+
+        [HttpPost]
+
+
+        public async Task<IActionResult> Edit(SaveMacroIndicadorViewModels vm, int Id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Save");
+            }
+
+            var dto = new MacroIndicadorDto
+            {
+                Id = vm.Id,
+                Nombre = vm.Nombre,
+                Peso = vm.Peso,
+                MasAltoEsMejor = vm.MasAltoEsMejor
+            };
+
+            await _macroIndicadorService.UpdateAsyncEntie(dto, Id);
+            return RedirectToRoute(new { Controller = "MacroIndicador", Action = "Index" });
+        }
+
+
+
+        public async Task<IActionResult> Delete(int Id)
+        {
+            var dto = await _macroIndicadorService.GetById(Id);
+
+            if (dto == null)
+            {
+                return RedirectToRoute(new { Controller = "MacroIndicador", Action = "Index" });
+            }
+
+            DeleteMacroIndicadorViewModels vm = new()
+            {
+                Id = dto.Id,
+                Nombre = dto.Nombre,
+                Peso = dto.Peso,
+                MasAltoEsMejor = dto.MasAltoEsMejor
+            };
+
+            return View(vm);
+        }
+
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(DeleteMacroIndicadorViewModels vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+               await _macroIndicadorService.Delete(vm.Id);
+                return RedirectToRoute(new { Controller = "MacroIndicador", Action = "Index" });
+          
+
+          
         }
     }
 }

@@ -1,0 +1,46 @@
+﻿@using Application.ViewModels.ConfiguracionRetorno;
+@model List<ConfiguracionRetornoViewModels>;
+
+@{
+
+    ViewData["Title"] = "Configuracion Retorno";
+}
+
+<div class="row">
+    <div class="text-center">
+        <h1 class="display-4">Mantenimiento de Retorno</h1>
+    </div>
+</div>
+
+<div class="row mt-2">
+    <a class="btn btn-outline-success float-end" asp-controller="ConfiguracionRetorno" asp-action="Create">Agregar Retorno +</a>
+</div>
+
+<div class="row mt-2 d-flex flex-wrap justify-content-start">
+    @if (Model.Count == 0)
+    {
+        <div class="text-center">
+            <h5 class="display-4">No hay paises</h5>
+        </div>
+    }
+    else
+    {
+        @foreach (var item in Model)
+        {
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Tasa Minima: @item.TasaMinima</h5>
+                        <h5 class="card-title">Tasa Maxima: @item.TasaMaxima</h5>
+                        <div class="mt-2">
+                            <a class="btn btn-outline-warning" asp-controller="ConfiguracionRetorno" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                            <a class="btn btn-outline-danger me-2" asp-controller="ConfiguracionRetorno" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+

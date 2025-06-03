@@ -8,11 +8,11 @@ namespace Application.ViewModels.ConfiguracionRetorno
 {
     public class SaveConfiguracionRetornoViewModel
     {
-        public int Id { get; set; }
+        public  int Id { get; set; }
 
-        public decimal TasaMinima { get; set; }
+        public  required decimal TasaMinima { get; set; }
 
-        public decimal TasaMaxima { get; set; }
+        public  required decimal TasaMaxima { get; set; }
 
     }
 }

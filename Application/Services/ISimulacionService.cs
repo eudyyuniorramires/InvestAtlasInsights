@@ -10,5 +10,7 @@ namespace Application.Services
     public interface ISimulacionService
     {
         Task<SimulacionViewModel> SimularRankingAsync(int anio);
+        Task<SimulacionViewModel> GetRankingAsync(int anio); 
+
     }
 }

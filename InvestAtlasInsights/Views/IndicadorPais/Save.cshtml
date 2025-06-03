@@ -15,16 +15,22 @@
     <div class="form-group">
         <label asp-for="MacroindicadorId"></label>
         <select asp-for="MacroindicadorId" asp-items="Model.Macroindicadores" class="form-control"></select>
+        <span asp-validation-for="MacroindicadorId" class="text-danger"></span>
+
     </div>
 
     <div class="form-group">
         <label asp-for="Anio"></label>
         <input asp-for="Anio" class="form-control" />
+        <span asp-validation-for="Anio" class="text-danger"></span>
+
     </div>
 
     <div class="form-group">
         <label asp-for="Valor"></label>
         <input asp-for="Valor" class="form-control" />
+        <span asp-validation-for="Valor" class="text-danger"></span>
+
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>

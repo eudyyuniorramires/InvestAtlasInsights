@@ -24,6 +24,7 @@
                 <div class="mb-3">
                     <label asp-for="TasaMaxima" class="form-label">Tasa Maxima:</label>
                     <input class="form-control" asp-for="TasaMaxima" />
+                    <span asp-validation-for="TasaMaxima" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
@@ -35,7 +36,19 @@
                     <button type="submit" class="btn btn-outline-primary float-end">Guardar</button>
                     <a asp-controller="ConfiguracionRetorno" asp-action="Index" class="btn btn-outline-warning me-2">Regresar</a>
                 </div>
+
             </form>
+
+
         </div>
+
+        
+    </div>
+
+    <div class="row  d-grid justify-content-center text-danger ">
+        <div class="col">
+            <p>*La tasa minima no puede ser mayor que la maxima*</p>
+        </div>
+
     </div>
 </div>

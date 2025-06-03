@@ -54,17 +54,29 @@ namespace Persistence.Repositories
 
         public async Task<bool> DeleteAsync(int Id)
         {
-            var entity = await _context.Set<MacroIndicador>().FindAsync(Id);
-
-            if (entity != null)
+            try
             {
+                var entity = await _context.Set<MacroIndicador>().FindAsync(Id);
+
+                if (entity == null)
+                {
+                    Console.WriteLine("MacroIndicador no encontrado.");
+                    return false;
+                }
+
                 _context.Set<MacroIndicador>().Remove(entity);
                 await _context.SaveChangesAsync();
-                return true; 
-            }
 
-            return false; 
+                Console.WriteLine("MacroIndicador eliminado.");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al eliminar MacroIndicador: {ex.Message}");
+                throw;
+            }
         }
+
 
 
 
@@ -89,6 +101,11 @@ namespace Persistence.Repositories
 
             return await _context.Set<MacroIndicador>().FindAsync(Id);
 
+        }
+
+        public async Task<IEnumerable<MacroIndicador>> GetAllAsync()
+        {
+            return await _context.MacroIndicadores.ToListAsync();
         }
     }
 }

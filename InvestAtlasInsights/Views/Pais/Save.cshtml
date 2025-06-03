@@ -24,11 +24,14 @@
                 <div class="mb-3">
                     <label asp-for="Nombre" class="form-label">Nombre:</label>
                     <input class="form-control" asp-for="Nombre" />
+                    <span asp-validation-for="Nombre" class="text-danger" ></span>
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="CodigoISO" class="form-label">Codigo ISO:</label>
                     <input class="form-control" asp-for="CodigoISO" />
+                    <span asp-validation-for="CodigoISO" class="text-danger"></span>
+
                 </div>
 
                 <div>

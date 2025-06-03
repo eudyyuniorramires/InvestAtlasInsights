@@ -19,8 +19,9 @@
         <input asp-for="Peso" class="form-control" />
         <span asp-validation-for="Peso" class="text-danger"></span>
     </div>
+
     <button type="submit" class="btn btn-success">Agregar</button>
-    <a href="/SimulacionMacroIndicador" class="btn btn-secondary">Volver</a>
+    <a asp-controller="Simulacion" asp-action="Index" class="btn btn-secondary">Volver</a>
 </form>
 
 @section Scripts {

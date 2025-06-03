@@ -1,8 +1,112 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Application.ViewModels.MacroIndicador
+@using Persistence.Entities
+@using Application.ViewModels.SimulacionMacroIndicado
+@model Tuple<List<MacroIndicador>, SimulacionViewModel>
+
+@{
+    ViewBag.Title = "Inicio de Macroindicadores";
+    var simulaciones = Model.Item1;
+    var viewModel = Model.Item2;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    <div class="text-center">
+        <h1 class="display-4">InvestAtlasInsights</h1>
+    </div>
 </div>
+
+<div class="row mt-2">
+    <a class="btn btn-outline-success float-end" asp-controller="IndicadorPais" asp-action="Index">Agregar Indicador +</a>
+</div>
+
+<p class="row mt-2">
+
+    <a class="btn btn-outline-primary" asp-controller="MacroIndicador" asp-action="Index">Agregar Macroindicador +</a>
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Peso</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in simulaciones)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Peso</td>              
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><strong>Suma total de pesos:</strong> @ViewBag.TotalPeso</p>
+
+<hr />
+
+<form method="get" asp-controller="Home" asp-action="">
+    <input type="hidden" name="id" value="@viewModel.Id" />
+    <div class="form-group">
+        <label for="anio">Seleccione un año:</label>
+        <select name="anio" class="form-control" id="anio">
+            @foreach (var anio in viewModel.AñosDisponibles)
+            {
+                if (anio == viewModel.AñoSeleccionado)
+                {
+                    <option value="@anio" selected>@anio</option>
+                }
+                else
+                {
+                    <option value="@anio">@anio</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="row d-grid justify-content-center">
+        <div class="col">
+            <p class="text-danger">*Verifica que todos los paises cumplan con los MacroIndicadores establecidos*</p>
+        </div>
+    </div>
+    
+
+    <div class="row mt-2">
+        <button type="submit" class="btn btn-outline-info  float-end">Obtener Ranking</button>
+    </div>
+    
+</form>
+
+@if (!string.IsNullOrEmpty(viewModel.MensajeValidacion) && viewModel.ResultadosRanking == null)
+{
+    <div class="alert alert-warning mt-3">
+        @viewModel.MensajeValidacion
+    </div>
+}
+
+@if (viewModel.ResultadosRanking != null && viewModel.ResultadosRanking.Any())
+{
+    <h3 class="mt-4">Resultados del Ranking</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>País</th>
+                <th>Codigo ISO</th>
+                <th>Scoring</th>
+                <th>Tasa de Retorno</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var resultado in viewModel.ResultadosRanking)
+            {
+                <tr>
+                    <td>@resultado.NombrePais</td>
+                    <td>@resultado.CodigoIso</td>
+                    <td>@Math.Round(resultado.Scoring, 4)</td>
+                    <td>@resultado.TasaRetorno %</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -11,6 +11,8 @@ namespace Application.ViewModels.SimulacionMacroIndicado
     {
         public int Id { get; set; }
         public int AñoSeleccionado { get; set; }
+
+        public double Peso { get; set; }
         public List<int> AñosDisponibles { get; set; } = new();
         public List<SimulacionRankingDto> ResultadosRanking { get; set; } = new();
         public string? MensajeValidacion { get; set; }

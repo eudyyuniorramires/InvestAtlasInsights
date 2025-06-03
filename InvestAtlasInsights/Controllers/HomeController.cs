@@ -1,32 +1,37 @@
+using Application.Services;
+using Application.ViewModels.SimulacionMacroIndicado;
 using InvestAtlasInsights.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using Persistence.Entities;
+using Persistence.Repositories;
+using System.Threading.Tasks;
 
 namespace InvestAtlasInsights.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly SimulacionService _simulacionService;
+        private readonly MacroIndicadorRepository _macroIndicadorRepository; 
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(SimulacionService simulacionService, MacroIndicadorRepository macroIndicadorRepository)
         {
-            _logger = logger;
+            _simulacionService = simulacionService;
+            _macroIndicadorRepository = macroIndicadorRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? anio)
         {
-            return View();
-        }
+            int añoSeleccionado = anio ?? DateTime.Now.Year;
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+            var viewModel = await _simulacionService.GetRankingAsync(añoSeleccionado);
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var macroIndicadores = await _macroIndicadorRepository.GetAllAsync();
+            var model = new Tuple<List<MacroIndicador>, SimulacionViewModel>(
+                macroIndicadores.ToList(),
+                viewModel
+            );
+
+            return View(model);
         }
     }
 }

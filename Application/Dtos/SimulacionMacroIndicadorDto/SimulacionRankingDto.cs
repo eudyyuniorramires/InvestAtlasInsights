@@ -8,6 +8,7 @@ namespace Application.Dtos.SimulacionMacroIndicadorDto
 {
     public class SimulacionRankingDto
     {
+        public int Id { get; set; }
         public string NombrePais { get; set; } = null!;
         public string CodigoIso { get; set; } = null!;
         public double Scoring { get; set; }

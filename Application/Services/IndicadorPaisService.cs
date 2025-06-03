@@ -25,9 +25,9 @@ namespace Application.Services
             {
                 Id = i.Id,
                 PaisId = i.PaisId,
-                PaisNombre = i.Pais?.Nombre, // Incluye el nombre del país
+                PaisNombre = i.Pais?.Nombre, 
                 MacroIndicadorId = i.MacroIndicadorId,
-                MacroIndicadorNombre = i.MacroIndicadores.Nombre, // Incluye el nombre del macroindicador
+                MacroIndicadorNombre = i.MacroIndicadores.Nombre, 
                 Anio = i.Anio,
                 Valor = i.Valor
             }).ToList();

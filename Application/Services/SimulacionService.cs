@@ -27,6 +27,8 @@ namespace Application.Services
             _simulacionRepo = new SimulacionMacroIndicadorRepository(applicationDbContext);
         }
 
+       
+
         public async Task<SimulacionViewModel> SimularRankingAsync(int anio)
         {
             var simulacionMacros = await _simulacionRepo.GetAllAsync();
@@ -42,7 +44,7 @@ namespace Application.Services
             }
 
             var paises = await _paisRepository.GetAllList();
-            var indicadores = await _indicadorPaisRepository.GetByAnioAsync(anio); // Obtener todos los indicadores para el año
+            var indicadores = await _indicadorPaisRepository.GetByAnioAsync(anio); 
 
             var paisesElegibles = new List<(Pais pais, List<IndicadorPais> indicadores)>();
 
@@ -132,5 +134,123 @@ namespace Application.Services
                 ResultadosRanking = resultadosOrdenados
             };
         }
+
+        public async Task<SimulacionViewModel> GetRankingAsync(int anio)
+        {
+            var macros = await _macroIndicadorRepository.GetAllAsync();
+
+            var indicadores = await _indicadorPaisRepository.GetAllWithIncludeAsync();
+            var añosDisponibles = indicadores
+                .Select(i => i.Anio) 
+                .Distinct()
+                .OrderBy(a => a)
+                .ToList();
+
+            var sumaPesos = macros.Sum(m => m.Peso);
+
+            if (Math.Abs(sumaPesos - 1) > 0.0001m)
+            {
+                return new SimulacionViewModel
+                {
+                    AñoSeleccionado = anio,
+                    AñosDisponibles = añosDisponibles, 
+                    MensajeValidacion = "Se deben ajustar los pesos de los macroindicadores registrado hasta que la suma de lo mismo sea igual a 1"
+                };
+            }
+
+            var paises = await _paisRepository.GetAllList();
+            var indicadoresPorAnio = await _indicadorPaisRepository.GetByAnioAsync(anio);
+
+            var paisesElegibles = new List<(Pais pais, List<IndicadorPais> indicadores)>();
+
+            foreach (var pais in paises)
+            {
+                var indicadoresPais = indicadoresPorAnio.Where(i => i.PaisId == pais.Id).ToList();
+
+                var validos = macros
+                    .Where(m => m.Peso > 0)
+                    .All(m => indicadoresPais.Any(ip => ip.MacroIndicadorId == m.Id));
+
+                if (validos)
+                    paisesElegibles.Add((pais, indicadoresPais));
+            }
+
+            if (paisesElegibles.Count < 2)
+            {
+                var mensaje = paisesElegibles.Any()
+                    ? $"No hay suficiente países para poder calcular el ranking y la tasa de retorno, el único país que cumple con los requisitos es {paisesElegibles.First().pais.Nombre}"
+                    : "No hay países que cumplan con los requisitos para calcular el ranking y la tasa de retorno.";
+
+                return new SimulacionViewModel
+                {
+                    AñoSeleccionado = anio,
+                    AñosDisponibles = añosDisponibles, 
+                    MensajeValidacion = mensaje
+                };
+            }
+
+            var resultados = new List<SimulacionRankingDto>();
+
+            foreach (var macro in macros)
+            {
+                var valores = paisesElegibles.Select(pe =>
+                    pe.indicadores.First(i => i.MacroIndicadorId == macro.Id).Valor
+                ).ToList();
+
+                var min = valores.Min();
+                var max = valores.Max();
+
+                foreach (var (pais, indicadoresPais) in paisesElegibles)
+                {
+                    var valor = indicadoresPais.First(i => i.MacroIndicadorId == macro.Id).Valor;
+                    var indicador = indicadoresPais.First(i => i.MacroIndicadorId == macro.Id).MacroIndicadores;
+                    double norm;
+
+                    if (min == max)
+                    {
+                        norm = 0.5;
+                    }
+                    else
+                    {
+                        norm = (double)(indicador.MasAltoEsMejor
+                            ? (valor - min) / (max - min)
+                            : 1 - ((valor - min) / (max - min)));
+                    }
+
+                    if (!resultados.Any(r => r.CodigoIso == pais.CodigoISO))
+                    {
+                        resultados.Add(new SimulacionRankingDto
+                        {
+                            CodigoIso = pais.CodigoISO,
+                            NombrePais = pais.Nombre,
+                            Scoring = 0
+                        });
+                    }
+
+                    resultados.First(r => r.CodigoIso == pais.CodigoISO).Scoring += norm * (double)macro.Peso;
+                }
+            }
+
+            var tasas = await _tasaRetornoRepository.GetTasaRetornoAsync();
+            var rmin = tasas.Item1;
+            var rmax = tasas.Item2;
+
+            foreach (var r in resultados)
+            {
+                r.TasaRetorno = Math.Round(rmin + (rmax - rmin) * r.Scoring, 2);
+            }
+
+            var resultadosOrdenados = resultados.OrderByDescending(r => r.Scoring).ToList();
+
+            return new SimulacionViewModel
+            {
+                AñoSeleccionado = anio,
+                AñosDisponibles = añosDisponibles, 
+                ResultadosRanking = resultadosOrdenados
+            };
+        }
+
+
+
     }
 }

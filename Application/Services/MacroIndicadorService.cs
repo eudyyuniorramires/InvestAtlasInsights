@@ -15,9 +15,13 @@ namespace Application.Services
     {
 
         private readonly MacroIndicadorRepository _macroIndicadorRepository;
+        private readonly ApplicationDbContext _context; 
+
 
         public MacroIndicadorService(ApplicationDbContext applicationDbContext)
         {
+
+            _context = applicationDbContext;
 
             _macroIndicadorRepository = new MacroIndicadorRepository(applicationDbContext);
 
@@ -61,15 +65,34 @@ namespace Application.Services
             }
         }
 
-        public async Task<bool> Delete(int Id)
+        public async Task<bool> DeleteAsyc(int id)
         {
             try
             {
-                return await _macroIndicadorRepository.DeleteAsync(Id);
+                // Primero buscar el MacroIndicador
+                var entity = await _macroIndicadorRepository.GetByIdAsync(id);
+                if (entity == null)
+                {
+                    return false;
+                }
+
+                // Eliminar los SimulacionMacroIndicadores relacionados
+                var relacionados = await _context.SimulacionesMacroIndicadores
+                    .Where(s => s.MacroIndicadorId == id)
+                    .ToListAsync();
+
+                if (relacionados.Any())
+                {
+                    _context.SimulacionesMacroIndicadores.RemoveRange(relacionados);
+                    await _context.SaveChangesAsync();
+                }
+
+                // Ahora eliminar el MacroIndicador
+                return await _macroIndicadorRepository.DeleteAsync(id);
             }
             catch (Exception)
             {
-                return false; // Manejo de excepciones
+                return false;
             }
         }
 
@@ -165,13 +188,12 @@ namespace Application.Services
         }
 
 
-  
+
 
         public async Task<bool> UpdateAsyncEntie(MacroIndicadorDto dto, int Id)
         {
             try
             {
-
                 var entity = await _macroIndicadorRepository.GetByIdAsync(Id);
 
                 if (entity == null)
@@ -179,7 +201,16 @@ namespace Application.Services
                     return false;
                 }
 
-                entity.Id = dto.Id;
+                var otrosIndicadores = (await _macroIndicadorRepository.GetAllList())
+                    .Where(m => m.Id != Id);
+
+                var totalPesoOtros = otrosIndicadores.Sum(m => m.Peso);
+
+                if (totalPesoOtros + dto.Peso > 1)
+                {
+                    return false;
+                }
+
                 entity.Nombre = dto.Nombre;
                 entity.Peso = dto.Peso;
                 entity.MasAltoEsMejor = dto.MasAltoEsMejor;
@@ -187,14 +218,12 @@ namespace Application.Services
                 var updatedEntity = await _macroIndicadorRepository.UpdateAsync(Id, entity);
 
                 return updatedEntity != null;
-
             }
             catch (Exception)
             {
                 return false;
             }
-
-
         }
+
     }
 }

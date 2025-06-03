@@ -24,12 +24,11 @@ namespace Application.Services
 
 
 
-        public async Task<bool> AddAsync(ConfiguracionRetornoDto dto) 
+        public async Task<bool> AddAsync(ConfiguracionRetornoDto dto)
         {
-        
-            if(dto.TasaMinima > dto.TasaMaxima)
+            if (dto.TasaMinima > dto.TasaMaxima)
             {
-                throw new ArgumentException("La tasa mínima no puede ser mayor que la tasa máxima.");
+                return false; 
             }
 
             try
@@ -49,8 +48,8 @@ namespace Application.Services
             {
                 return false;
             }
+        }
 
-        } 
 
 
 
@@ -60,7 +59,7 @@ namespace Application.Services
 
             if (dto.TasaMinima > dto.TasaMaxima)
             {
-                throw new ArgumentException("La tasa mínima no puede ser mayor que la tasa máxima.");
+                return false;
             }
 
             try

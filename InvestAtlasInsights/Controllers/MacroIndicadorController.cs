@@ -132,18 +132,20 @@ namespace InvestAtlasInsights.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Delete(DeleteMacroIndicadorViewModels vm)
+        public async Task<IActionResult> DeleteConfirmacion(int id)
         {
-            if (!ModelState.IsValid)
+            var result = await _macroIndicadorService.DeleteAsyc(id);
+
+            if (!result)
             {
-                return View(vm);
+                TempData["Error"] = "No se pudo eliminar el MacroIndicador.";
+            }
+            else
+            {
+                TempData["Success"] = "MacroIndicador eliminado correctamente.";
             }
 
-               await _macroIndicadorService.Delete(vm.Id);
-                return RedirectToRoute(new { Controller = "MacroIndicador", Action = "Index" });
-          
-
-          
+            return RedirectToAction("Index");
         }
     }
 }

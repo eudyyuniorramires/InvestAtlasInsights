@@ -19,7 +19,6 @@
 </div>
 
 
-<p><a class="btn btn-primary" asp-controller="Simulacion" asp-action="ConfiguracionSimulacion">Simular Raking</a></p>
 
 
 
@@ -38,12 +37,17 @@
                 <td>@item.MacroIndicadores.Nombre</td>
                 <td>@item.Peso</td>
                 <td>
-                    <a asp-controller="Simulacion" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
-                    <a asp-controller="Simulacion" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                    <a class="btn btn-outline-warning" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                    <a class="btn btn-outline-danger" asp-controller="Simulacion" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+
+<div class="row mt-2">
+    <a class="btn btn-primary" asp-controller="Simulacion" asp-action="ConfiguracionSimulacion">Simular Raking</a>
+</div>
 
 <p><strong>Suma total de pesos:</strong> @ViewBag.TotalPeso</p>

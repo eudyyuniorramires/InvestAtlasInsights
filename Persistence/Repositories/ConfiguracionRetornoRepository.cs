@@ -100,7 +100,7 @@ namespace Persistence.Repositories
         public async Task<ConfiguracionRetorno?> GetLatestAsync()
         {
             return await _context.ConfiguracionesRetorno
-                .OrderByDescending(c => c.Id) // Ordenar por Id para obtener el último registro
+                .OrderByDescending(c => c.Id) 
                 .FirstOrDefaultAsync();
         }
 
@@ -110,7 +110,7 @@ namespace Persistence.Repositories
 
             if (configuracion == null || configuracion.TasaMinima <= 0 || configuracion.TasaMaxima <= 0)
             {
-                return (2.0, 15.0); // Usando double literal en lugar de decimal
+                return (2.0, 15.0);
             }
 
             return ((double)configuracion.TasaMinima, (double)configuracion.TasaMaxima);

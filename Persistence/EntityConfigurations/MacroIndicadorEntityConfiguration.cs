@@ -36,7 +36,7 @@ namespace Persistence.EntityConfigurations
             builder.HasMany<IndicadorPais>(mi => mi.IndicadoresPaises)
                 .WithOne(ip => ip.MacroIndicadores) 
                 .HasForeignKey(ip => ip.MacroIndicadorId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             #endregion
         }
     }

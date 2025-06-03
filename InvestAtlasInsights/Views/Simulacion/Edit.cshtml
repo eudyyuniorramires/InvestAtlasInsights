@@ -7,7 +7,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<form asp-action="Edit" method="post">
+<form  asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
     <div class="mb-3">
         <label class="form-label">Macroindicador:</label>
@@ -19,7 +19,7 @@
         <span asp-validation-for="Peso" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Guardar</button>
-    <a href="/SimulacionMacroIndicador" class="btn btn-secondary">Volver</a>
+    <a asp-controller="Simulacion" asp-action="Index" class="btn btn-secondary">Volver</a>
 </form>
 
 @section Scripts {

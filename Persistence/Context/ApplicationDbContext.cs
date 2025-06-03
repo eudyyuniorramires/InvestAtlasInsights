@@ -11,6 +11,7 @@ namespace Persistence.Context
 {
     public class ApplicationDbContext : DbContext 
     {
+       
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
        
         public DbSet<Entities.Pais> Paises { get; set; }
@@ -20,6 +21,9 @@ namespace Persistence.Context
         public DbSet<Entities.MacroIndicador> MacroIndicadores { get; set; }
 
         public DbSet<Entities.ConfiguracionRetorno> ConfiguracionesRetorno { get; set; }
+
+
+        public DbSet<Entities.SimulacionMacroIndicador> SimulacionesMacroIndicadores { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,6 +36,7 @@ namespace Persistence.Context
             modelBuilder.ApplyConfiguration(new IndicadorPaisEntityConfiguration());
             modelBuilder.ApplyConfiguration(new MacroIndicadorEntityConfiguration());
             modelBuilder.ApplyConfiguration(new PaisEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new SimulacionMacroIndicadorEntityConfiguration());
 
 
 

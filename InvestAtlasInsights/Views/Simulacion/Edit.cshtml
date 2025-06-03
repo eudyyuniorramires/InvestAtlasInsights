@@ -1,0 +1,29 @@
+﻿@using Application.ViewModels.SimulacionMacroIndicado;
+
+@model SimulacionMacroIndicadorEditViewModel
+@{
+    ViewBag.Title = "Editar Peso de Macroindicador";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label class="form-label">Macroindicador:</label>
+        <input type="text" class="form-control" value="@Model.NombreMacroIndicador" readonly />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Peso" class="form-label"></label>
+        <input asp-for="Peso" class="form-control" />
+        <span asp-validation-for="Peso" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="/SimulacionMacroIndicador" class="btn btn-secondary">Volver</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

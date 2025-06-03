@@ -1,0 +1,17 @@
+﻿@model Persistence.Entities.SimulacionMacroIndicador
+@{
+    ViewBag.Title = "Eliminar Macroindicador de Simulación";
+}
+
+<h2>¿Está seguro que desea eliminar este macroindicador de la simulación?</h2>
+
+<div>
+    <strong>Indicador:</strong> @Model.MacroIndicadores.Nombre<br />
+    <strong>Peso:</strong> @Model.Peso
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a href="/SimulacionMacroIndicador" class="btn btn-secondary">Cancelar</a>
+</form>

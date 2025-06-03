@@ -1,3 +1,4 @@
+using Application.Services;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
 using Persistence.Repositories;
@@ -22,6 +23,13 @@ namespace InvestAtlasInsights
 
 
            builder.Services.AddScoped<MacroIndicadorRepository>();
+
+           builder.Services.AddScoped<SimulacionService>();
+
+           builder.Services.AddScoped<SimulacionMacroIndicadorRepository>();
+
+            builder.Services.AddScoped<PaisRepository>();
+
 
 
 

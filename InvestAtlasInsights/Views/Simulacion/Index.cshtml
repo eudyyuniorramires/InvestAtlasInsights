@@ -1,0 +1,49 @@
+﻿@using Persistence.Entities;
+@model List<Persistence.Entities.SimulacionMacroIndicador>
+@{
+    ViewBag.Title = "Simulación de Macroindicadores";
+}
+
+<div class="row">
+    <div class="text-center">
+        <h1 class="display-4">Simulación de Macroindicadores</h1>
+    </div>
+</div>
+
+
+
+
+
+<div class="row mt-2">
+    <a class="btn btn-outline-success float-end" asp-action="Create" asp-controller="IndicadorPais" asp-action="Create">Agregar Indicador +</a>
+</div>
+
+
+<p><a class="btn btn-primary" asp-controller="Simulacion" asp-action="ConfiguracionSimulacion">Simular Raking</a></p>
+
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Peso</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.MacroIndicadores.Nombre</td>
+                <td>@item.Peso</td>
+                <td>
+                    <a asp-controller="Simulacion" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                    <a asp-controller="Simulacion" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><strong>Suma total de pesos:</strong> @ViewBag.TotalPeso</p>

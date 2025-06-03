@@ -61,6 +61,14 @@ namespace Persistence.Repositories
             }
             return null;
         }
+        public async Task<List<IndicadorPais>> GetByAnioAsync(int anio)
+        {
+            return await _context.IndicadoresPaises
+                .Where(i => i.Anio == anio)
+                .Include(i => i.Pais)
+                .Include(i => i.MacroIndicadores)
+                .ToListAsync();
+        }
 
 
         public async Task DeleteAsync(int id)

@@ -82,7 +82,13 @@ namespace Persistence.Repositories
             return await _context.Set<Pais>().FindAsync(id);
         }
 
-
-
+        public async Task<List<int>> GetAniosDisponiblesAsync()
+        {
+          return await _context.IndicadoresPaises
+         .Select(ip => ip.Anio)
+         .Distinct()
+         .OrderByDescending(anio => anio)
+         .ToListAsync();
+        }
     }
 }

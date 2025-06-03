@@ -96,5 +96,24 @@ namespace Persistence.Repositories
 
 
         }
+
+        public async Task<ConfiguracionRetorno?> GetLatestAsync()
+        {
+            return await _context.ConfiguracionesRetorno
+                .OrderByDescending(c => c.Id) // Ordenar por Id para obtener el último registro
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<(double Min, double Max)> GetTasaRetornoAsync()
+        {
+            var configuracion = await _context.ConfiguracionesRetorno.FirstOrDefaultAsync();
+
+            if (configuracion == null || configuracion.TasaMinima <= 0 || configuracion.TasaMaxima <= 0)
+            {
+                return (2.0, 15.0); // Usando double literal en lugar de decimal
+            }
+
+            return ((double)configuracion.TasaMinima, (double)configuracion.TasaMaxima);
+        }
     }
 }
